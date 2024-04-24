@@ -2,20 +2,24 @@ import requests
 import ipaddress
 from concurrent.futures import ThreadPoolExecutor
 from tqdm import tqdm
+import argparse
+
 
 # Define the network address and subnet mask
-network_address = "172.19.4.0"
-subnet_mask = "255.255.252.0"
-port = "631"
+parser = argparse.ArgumentParser()
+parser.add_argument("-p", "--port", help="which port on IPs to scan", default="631")
+parser.add_argument("-i", "--ip", help="ip address to scan", default="172.19.4.0")
+parser.add_argument("-s", "--subnet", help="subnet mask to specify the IP range", default="255.255.252.0")
+args = parser.parse_args()
 
 # Create an IPv4 network object
-network = ipaddress.IPv4Network(f"{network_address}/{subnet_mask}")
+network = ipaddress.IPv4Network(f"{args.ip}/{args.subnet}")
 
 printer_ip = []
 
 # Function to check port status and write open IP addresses to a file
 def check_port(ip):
-    url = f"http://{ip}:{port}"
+    url = f"http://{ip}:{args.port}"
     try:
         response = requests.get(url, timeout=3)
         if response.status_code == 200:
