@@ -8,8 +8,8 @@ import argparse
 # Define the network address and subnet mask
 parser = argparse.ArgumentParser()
 parser.add_argument("-p", "--port", help="which port on IPs to scan", default="631")
-parser.add_argument("-i", "--ip", help="ip address to scan", default="172.19.4.0")
-parser.add_argument("-s", "--subnet", help="subnet mask to specify the IP range", default="255.255.252.0")
+parser.add_argument("-i", "--ip", help="ip address to scan", default="192.168.31.0")
+parser.add_argument("-s", "--subnet", help="subnet mask to specify the IP range", default="255.255.255.0")
 args = parser.parse_args()
 
 # Create an IPv4 network object
@@ -40,3 +40,8 @@ printer_ip = [ip for ip in results if ip]
 # Print ip one by one
 for ip in printer_ip:
     print(ip)
+
+# Write the output into txt file
+with open("ip_address.txt", "w") as file:
+    for ip in printer_ip:
+        file.write(f"{ip}\n")
